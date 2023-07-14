@@ -1,6 +1,9 @@
 package com.ajmal.questionservice.service;
 
+import java.math.BigInteger;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ajmal.questionservice.dao.QuestionsDAO;
+import com.ajmal.questionservice.model.Answer;
 import com.ajmal.questionservice.model.Question;
+import com.ajmal.questionservice.model.QuizQuestion;
 
 
 
@@ -78,6 +83,62 @@ public class QuestionsService {
 		}
 		
 		return ResponseEntity.badRequest().build();
+	}
+
+
+
+
+
+	public ResponseEntity<List<Integer>> getQuestionsForQuiz(String category, String numofques) {
+		BigInteger numofquesint = new BigInteger(numofques);
+		List<Integer> questions = questionsDAO.findRandomQuestionsByCategory(category,numofquesint);
+		return new ResponseEntity<>(questions,HttpStatus.OK);
+	}
+
+
+
+
+
+	public ResponseEntity<List<QuizQuestion>> getQuestionsFromId(List<Integer> questionId) 
+	{
+		List<QuizQuestion> questionsForQuiz = new ArrayList<>();
+		
+		 
+		
+		for (Integer q : questionId) 
+		{
+			Question questionsFromDB = questionsDAO.findById(q).orElse(null);
+			QuizQuestion qs =new QuizQuestion(questionsFromDB.getId(), questionsFromDB.getQuestionTitle(), questionsFromDB.getOption1(),
+					questionsFromDB.getOption2(), questionsFromDB.getOption3(), questionsFromDB.getOption4());
+			questionsForQuiz.add(qs);
+		}
+		
+		return new ResponseEntity<>(questionsForQuiz, HttpStatus.OK);
+	}
+
+
+
+
+
+	public ResponseEntity<Integer> getScore(List<Answer> answer) {
+		
+		
+		int score =0;
+		int i=0;
+		
+		for(Answer a : answer)
+		{
+			Question q = questionsDAO.findById(a.getId()).orElse(null);
+			
+
+				if(a.getAnswer().equals(q.getRightAnswer()))
+				{
+					score++;
+				}
+			
+		}
+		
+		return new ResponseEntity<>(score,HttpStatus.OK);
 	}
 
 }
