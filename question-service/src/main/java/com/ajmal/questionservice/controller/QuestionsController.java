@@ -51,13 +51,13 @@ public class QuestionsController {
 	}
     
     @PostMapping("/getquestions")
-	public  ResponseEntity<List<QuizQuestion>> getQuestionsFromId(@RequestParam List<Integer> questionId) 
+	public  ResponseEntity<List<QuizQuestion>> getQuestionsFromId(@RequestBody List<Integer> questionId) 
 	{
 		return questionsService.getQuestionsFromId(questionId);
 	}
     
     @PostMapping("/getscore")
-	public  ResponseEntity<Integer> getScore(@RequestParam List<Answer> answer) 
+	public  ResponseEntity<Integer> getScore(@RequestBody List<Answer> answer) 
 	{
 		return questionsService.getScore(answer);
 	}
