@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ajmal.quizservice.model.Answer;
+import com.ajmal.quizservice.model.QuizDTO;
 import com.ajmal.quizservice.model.QuizQuestion;
 import com.ajmal.quizservice.service.QuizService;
 
@@ -21,9 +22,9 @@ public class QuizController {
 	private QuizService quizService; 
 	
 	@PostMapping("/quiz/create/category/{category}/numofques/{numofques}/title/{title}")
-	public ResponseEntity<String> createQuiz(@PathVariable String category,@PathVariable String numofques,@PathVariable String title)
+	public ResponseEntity<String> createQuiz(@RequestBody QuizDTO quizDTO)
 	{
-		return quizService.createQuiz(category,numofques,title);
+		return quizService.createQuiz(quizDTO.getCategoryName(),quizDTO.getNumQuestions(),quizDTO.getTitle());
 		
 	}
 	
