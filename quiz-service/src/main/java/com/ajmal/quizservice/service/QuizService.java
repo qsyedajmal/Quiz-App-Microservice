@@ -37,6 +37,7 @@ public class QuizService {
 			
 			quizDAO.save(quiz);
 			
+			return new ResponseEntity<>("Quiz created successfully",HttpStatus.OK);
 		}
 		catch (Exception e) 
 		{

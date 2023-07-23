@@ -7,5 +7,5 @@ public class QuizDTO
 {
   private String categoryName;
   private Integer numQuestions;
-  private String Title;
+  private String title;
 }

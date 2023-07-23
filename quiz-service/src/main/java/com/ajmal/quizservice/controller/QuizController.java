@@ -21,7 +21,7 @@ public class QuizController {
 	@Autowired
 	private QuizService quizService; 
 	
-	@PostMapping("/quiz/create/category/{category}/numofques/{numofques}/title/{title}")
+	@PostMapping("/quiz/create")
 	public ResponseEntity<String> createQuiz(@RequestBody QuizDTO quizDTO)
 	{
 		return quizService.createQuiz(quizDTO.getCategoryName(),quizDTO.getNumQuestions(),quizDTO.getTitle());
