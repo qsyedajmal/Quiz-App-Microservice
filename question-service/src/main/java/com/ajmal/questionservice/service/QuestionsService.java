@@ -124,7 +124,7 @@ public class QuestionsService {
 		
 		
 		int score =0;
-		int i=0;
+	
 		
 		for(Answer a : answer)
 		{

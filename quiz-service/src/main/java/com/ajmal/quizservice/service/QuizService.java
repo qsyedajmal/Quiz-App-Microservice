@@ -49,48 +49,43 @@ public class QuizService {
 
 	public ResponseEntity<List<QuizQuestion>> getQuizQuestions(Integer quiz_id) {
 		
-//		Quiz quiz = quizDAO.findById(quiz_id).orElse(null);
-//		
-//		List<Question> questionFromQuiz = quiz.getQuestion();
-//		
-		List<QuizQuestion> questionToUser = new ArrayList<>();
-//		
-//		for(Question q : questionFromQuiz)
-//		{
-//			QuizQuestion qq = new QuizQuestion(q.getId(),q.getQuestionTitle(),q.getOption1(),q.getOption2(),q.getOption3(),q.getOption4());
-//			questionToUser.add(qq);
-//		}
 		
-		return new ResponseEntity<>(questionToUser,HttpStatus.OK);
+		
+        try
+        {
+        	Quiz quiz = quizDAO.findById(quiz_id).orElse(null);
+
+    		List<Integer> questionIds= quiz.getQuestionIds();
+    		
+    		List<QuizQuestion> questions = quizInterface.getQuestionsFromId(questionIds).getBody();
+    		
+    		return new ResponseEntity<>(questions,HttpStatus.OK);
+        }
+        
+        catch (Exception e) {
+        	System.out.println("Cant able to get quiz");
+		}
+		
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	public ResponseEntity<String> calculateResult(Integer quiz_id, List<Answer> answer) {
 		
-//		Quiz quiz = quizDAO.findById(quiz_id).orElse(null);
-//		
-//		List<Question> question = quiz.getQuestion();
-//		
-		int score =0;
-//		int i=0;
-//		
-//		for(Answer a : answer)
-//		{
-//			while (i<question.size())
-//			{
-//				if(a.getId().equals(question.get(i).getId()))
-//				{
-//					if(a.getAnswer().equals(question.get(i).getRightAnswer()))
-//					{
-//						score++;
-//					}
-//					break;
-//				}
-//				i++;
-//			}
-//			i=0;
-//		}
 		
-		return new ResponseEntity<>("The score is "+score, HttpStatus.OK);
+		
+        try
+        {
+        	Integer score = quizInterface.getScore(answer).getBody();
+        	
+        	return new ResponseEntity<>("The score is "+score, HttpStatus.OK);
+        }
+        
+        catch (Exception e) 
+        {
+        	System.out.println("Cant able to calculate score");
+		}
+		
+		return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
 	}
 
 }
